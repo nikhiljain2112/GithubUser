@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+</head>
+<body>
+	<div id ="target"></div>
+	<script src="./js/react.js"></script>
+	<script src="./js/jsx.js"></script>
+	<script src="./js/jquery.js"></script>
+	
+	<script type= "text/jsx">
+
+		var GithubProfile = React.createClass({
+			getInitialState : function(){
+				return {};
+			},
+
+			componentDidMount : function(){
+				var _self = this;
+
+				$.get("https://api.github.com/users/" + this.props.login, 
+					function(userData){
+					_self.setState(userData);
+				});
+
+			},
+
+			render:function(){
+				return <div>
+					<img src= {this.state.avatar_url} width= "80" />
+					<h3> {this.state.name} </h3>
+				</div>
+			}
+		});
+
+		var FormComp =  React.createClass({
+			handleSubmit: function(e){
+				e.preventDefault();
+				var loginInput = React.findDOMNode(this.refs.login);
+				this.props.addGitHubProfile(loginInput.value);
+
+				loginInput.value= '';
+			},
+
+			render:function(){
+				return <form onSubmit={this.handleSubmit}> 
+						 <input ref= "login" placeholder= "nikhiljain2112" /> 
+						 <button> Submit </button>
+				       </form>
+			}
+		});
+
+
+		var Main = React.createClass({
+			getInitialState: function(){
+				return {logins: []}
+			},
+
+			addGitHubProfile:function(login){
+				this.setState({logins:this.state.logins.concat(login)});
+			},
+
+			render:function(){
+
+				var gitHubProfiles = this.state.logins.map(function(login){
+					return (<GithubProfile login = {login} />);
+				})
+
+				return (
+						<div>
+							<FormComp addGitHubProfile= {this.addGitHubProfile} />
+							<hr/>
+							{gitHubProfiles}
+						</div>
+				)
+			}
+		});
+
+
+		React.render(<Main/>, document.getElementById('target'));
+
+	</script>
+</body>
+</html>

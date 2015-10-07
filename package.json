@@ -1,0 +1,16 @@
+{
+  "name": "GithubUser",
+  "version": "1.0.0",
+  "description": "get the users GitHub profile",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "nikhil Jain",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.3",
+    "react": "^0.13.3",
+    "serve-static": "^1.10.0"
+  }
+}
